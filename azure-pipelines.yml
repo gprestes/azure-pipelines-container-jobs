@@ -10,6 +10,12 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
+- task: DockerInstaller@0
+  displayName: Docker Installer
+  inputs:
+    dockerVersion: 20.10.17
+    releaseType: stable
+
 - script: |
     docker info
   displayName: 'Run a multi-line script'
