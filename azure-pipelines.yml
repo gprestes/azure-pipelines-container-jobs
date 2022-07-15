@@ -18,4 +18,11 @@ steps:
 
 - script: |
     docker info
-  displayName: 'Run a multi-line script'
+  displayName: 'Docker: info'
+
+- task: Docker@2
+  displayName: 'Docker: build'
+  inputs:
+    repository: 'flcdrg/example'
+    command: 'build'
+    Dockerfile: '**/Dockerfile'
