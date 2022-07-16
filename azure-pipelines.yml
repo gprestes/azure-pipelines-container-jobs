@@ -4,48 +4,65 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-container: ubuntu:22.04
+jobs:
 
-variables:
-  DOCKER_BUILDKIT: 1
+  - job: build-image
+    displayName: Build Docker image
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+    container: ubuntu:22.04
 
-- task: DockerInstaller@0
-  displayName: Docker Installer
-  inputs:
-    dockerVersion: 20.10.17
-    releaseType: stable
+    variables:
+      DOCKER_BUILDKIT: 1
 
-- script: |
-    docker info
-  displayName: 'Docker: info'
+    steps:
+    - script: echo Hello, world!
+      displayName: 'Run a one-line script'
 
-- task: Docker@2
-  displayName: 'Docker: login'
-  inputs:
-    command: login
-    containerRegistry: 'GitHub Packages'
+    - task: DockerInstaller@0
+      displayName: Docker Installer
+      inputs:
+        dockerVersion: 20.10.17
+        releaseType: stable
 
-- script: |
-    docker pull ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
-  displayName: 'Docker: pull'
+    - script: |
+        docker info
+      displayName: 'Docker: info'
 
-- script: |
-    docker inspect ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
-  displayName: 'Docker: inspect'
+    - task: Docker@2
+      displayName: 'Docker: login'
+      inputs:
+        command: login
+        containerRegistry: 'GitHub Packages'
 
-- task: Docker@2
-  displayName: 'Docker: build'
-  inputs:
-    containerRegistry: 'GitHub Packages'
-    repository: 'flcdrg/azure-pipelines-container-jobs'
-    command: 'buildAndPush'
-    Dockerfile: 'Dockerfile'
-    tags: 'latest'
-  
-- script: |
-    docker run --rm ghcr.io/flcdrg/azure-pipelines-container-jobs:latest dotnet --info
-  displayName: Run
+    - script: |
+        docker pull ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
+      displayName: 'Docker: pull'
+
+    - script: |
+        docker inspect ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
+      displayName: 'Docker: inspect'
+
+    - task: Docker@2
+      displayName: 'Docker: build'
+      inputs:
+        containerRegistry: 'GitHub Packages'
+        repository: 'flcdrg/azure-pipelines-container-jobs'
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+        tags: 'latest'
+      
+    - script: |
+        docker run --rm ghcr.io/flcdrg/azure-pipelines-container-jobs:latest dotnet --info
+      displayName: Run
+
+  - job: use-image
+    displayName: Use image
+    dependsOn: build-image
+    container:
+      image: ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
+      endpoint: 'GitHub Packages'
+
+    steps:
+      - script: |
+          dotnet --info
+          docker info
