@@ -6,6 +6,9 @@ pool:
 
 container: ubuntu:22.04
 
+variables:
+  DOCKER_BUILDKIT: 1
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
@@ -44,5 +47,5 @@ steps:
     tags: 'latest'
   
 - script: |
-    docker run --rm ghcr.io/flcdrg/azure-pipelines-container-jobs:latest blah
+    docker run --rm ghcr.io/flcdrg/azure-pipelines-container-jobs:latest dotnet --info
   displayName: Run
