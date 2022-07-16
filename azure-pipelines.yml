@@ -6,7 +6,7 @@ pool:
 
 jobs:
 
-  - job: build-image
+  - job: build_image
     displayName: Build Docker image
 
     container: ubuntu:22.04
@@ -55,9 +55,9 @@ jobs:
         docker run --rm ghcr.io/flcdrg/azure-pipelines-container-jobs:latest dotnet --info
       displayName: Run
 
-  - job: use-image
+  - job: use_image
     displayName: Use image
-    dependsOn: build-image
+    dependsOn: build_image
     container:
       image: ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
       endpoint: 'GitHub Packages'
