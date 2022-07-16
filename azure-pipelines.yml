@@ -43,3 +43,6 @@ steps:
     Dockerfile: 'Dockerfile'
     tags: 'latest'
   
+- script: |
+    docker run --rm -it ghcr.io/flcdrg/azure-pipelines-container-jobs:latest blah
+  displayName: Run
