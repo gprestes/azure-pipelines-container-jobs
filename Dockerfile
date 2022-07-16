@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 # Node 16, .NET 6 and PowerShell 7
 
 FROM node:16-alpine3.16
