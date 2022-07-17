@@ -20,10 +20,10 @@ jobs:
         filePath: "scripts/Test-ChangesMadeInPath.ps1"
         arguments: >-
           -authorisation "Bearer $(system.accesstoken)" 
-          -pathFilter "buid/containers" 
-          -buildId $(Build.BuildId)'
-          -collectionUri $(System.CollectionUri)
-          -project $(System.TeamProject)
+          -pathFilter "build/containers" 
+          -buildId $(Build.BuildId)
+          -collectionUri "$(System.CollectionUri)""
+          -project "$(System.TeamProject)"
       env:
         SYSTEM_ACCESSTOKEN: $(system.accesstoken)
 
