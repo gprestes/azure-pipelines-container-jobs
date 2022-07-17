@@ -39,7 +39,7 @@ RUN apk add --no-cache --virtual .pipeline-deps readline linux-pam \
     tzdata \
     userspace-rcu \
     curl \
-  && curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin -Channel ${DOTNET_SDK_VERSION} -InstallDir /usr/share/dotnet \
+  && curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin -Version ${DOTNET_SDK_VERSION} -InstallDir /usr/share/dotnet \
     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet \
   && apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache \
     lttng-ust \
