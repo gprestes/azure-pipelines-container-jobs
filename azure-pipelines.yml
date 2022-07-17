@@ -63,7 +63,8 @@ jobs:
         containerRegistry: 'GitHub Packages'
         repository: 'flcdrg/azure-pipelines-container-jobs'
         command: 'build'
-        Dockerfile: 'Dockerfile'
+        buildContext: 'build/containers'
+        Dockerfile: 'build/containers/Dockerfile'
         arguments: '--build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ghcr.io/flcdrg/azure-pipelines-container-jobs:latest'
         tags: 'latest'
 
