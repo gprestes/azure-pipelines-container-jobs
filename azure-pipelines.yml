@@ -1,3 +1,8 @@
+parameters:
+  - name: dockerVersion
+    type: string
+    default: '20.10.17'
+
 trigger:
 - main
 
@@ -31,7 +36,7 @@ jobs:
       displayName: Docker Installer
       condition: eq(variables['filesUpdated'], 'True')
       inputs:
-        dockerVersion: 20.10.17
+        dockerVersion: ${{ parameters.dockerVersion }}
         releaseType: stable
 
     - script: |
@@ -84,14 +89,24 @@ jobs:
       image: ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
       endpoint: 'GitHub Packages'
 
+    variables:
+      Configuration: Release
+
     steps:
       - task: DockerInstaller@0
         displayName: Docker Installer
         inputs:
-          dockerVersion: 20.10.17
+          dockerVersion: ${{ parameters.dockerVersion }}
           releaseType: stable
 
       - script: |
           dotnet --info
           docker info
         displayName: Info
+
+      - task: DotNetCoreCLI@2
+        displayName: '.NET: build'
+        inputs:
+          command: 'build'
+          workingDirectory: src
+        
