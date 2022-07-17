@@ -1,7 +1,18 @@
 parameters:
   - name: dockerVersion
+    displayName: 'Docker Version'
     type: string
     default: '20.10.17'
+
+  - name: dotnetVersion
+    displayName: '.NET Version'
+    type: string
+    default: '6.0.302'
+
+  - name: powershellVersion
+    displayName: 'PowerShell Version'
+    type: string
+    default: '7.2.5'
 
 trigger:
 - main
@@ -70,7 +81,7 @@ jobs:
         command: 'build'
         buildContext: 'build/containers'
         Dockerfile: 'build/containers/Dockerfile'
-        arguments: '--build-arg BUILDKIT_INLINE_CACHE=1 --build-arg DOTNET_SDK_VERSION=6.0.302 --build-arg POWERSHELL_VERSION=7.2.5 --cache-from ghcr.io/flcdrg/azure-pipelines-container-jobs:latest'
+        arguments: '--build-arg BUILDKIT_INLINE_CACHE=1 --build-arg DOTNET_SDK_VERSION=${{ parameters.dotnetVersion }} --build-arg POWERSHELL_VERSION=${{ parameters.powershellVersion }} --cache-from ghcr.io/flcdrg/azure-pipelines-container-jobs:latest'
         tags: 'latest'
 
     - task: Docker@2
