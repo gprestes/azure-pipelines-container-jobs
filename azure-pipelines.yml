@@ -22,7 +22,7 @@ jobs:
           -authorisation "Bearer $(system.accesstoken)" 
           -pathFilter "build/containers" 
           -buildId $(Build.BuildId)
-          -collectionUri "$(System.CollectionUri)""
+          -collectionUri "$(System.CollectionUri)"
           -project "$(System.TeamProject)"
       env:
         SYSTEM_ACCESSTOKEN: $(system.accesstoken)
