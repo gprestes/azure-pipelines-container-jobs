@@ -15,7 +15,7 @@ jobs:
       DOCKER_BUILDKIT: 1
 
     steps:
-      - task: PowerShell@2
+    - task: PowerShell@2
       inputs:
         filePath: "scripts/Test-ChangesMadeInPath.ps1"
         arguments: >-
@@ -26,7 +26,7 @@ jobs:
           -project $(System.TeamProject)
       env:
         SYSTEM_ACCESSTOKEN: $(system.accesstoken)
-        
+
     - task: DockerInstaller@0
       displayName: Docker Installer
       condition: eq(variables['filesUpdated'], 'True')
