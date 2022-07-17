@@ -8,12 +8,6 @@ param (
   $buildId
 )
 
-Write-Host $authorisation
-Write-Host $pathFilter
-Write-Host $collectionUri
-Write-Host $project
-Write-Host $buildId
-
 $changesUrl = "$collectionUri/$project/_apis/build/builds/$buildId/changes?api-version=6.0"
 $changesResponse = Invoke-RestMethod -Uri $changesUrl -Headers @{Authorization = $authorisation } -Method Get
 $commits = @($changesResponse.value | ForEach-Object { $_.id })
