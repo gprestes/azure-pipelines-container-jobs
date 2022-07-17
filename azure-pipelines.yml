@@ -15,8 +15,21 @@ jobs:
       DOCKER_BUILDKIT: 1
 
     steps:
+      - task: PowerShell@2
+      inputs:
+        filePath: "scripts/Test-ChangesMadeInPath.ps1"
+        arguments: >-
+          -authorisation "Bearer $(system.accesstoken)" 
+          -pathFilter "buid/containers" 
+          -buildId $(Build.BuildId)'
+          -collectionUri $(System.CollectionUri)
+          -project $(System.TeamProject)
+      env:
+        SYSTEM_ACCESSTOKEN: $(system.accesstoken)
+        
     - task: DockerInstaller@0
       displayName: Docker Installer
+      condition: eq(variables['filesUpdated'], 'True')
       inputs:
         dockerVersion: 20.10.17
         releaseType: stable
@@ -24,9 +37,11 @@ jobs:
     - script: |
         docker info
       displayName: 'Docker: info'
+      condition: eq(variables['filesUpdated'], 'True')
 
     - task: Docker@2
       displayName: 'Docker: login'
+      condition: eq(variables['filesUpdated'], 'True')
       inputs:
         command: login
         containerRegistry: 'GitHub Packages'
@@ -34,13 +49,16 @@ jobs:
     - script: |
         docker pull ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
       displayName: 'Docker: pull'
+      condition: eq(variables['filesUpdated'], 'True')
 
     - script: |
         docker inspect ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
       displayName: 'Docker: inspect'
+      condition: eq(variables['filesUpdated'], 'True')
 
     - task: Docker@2
       displayName: 'Docker: build'
+      condition: eq(variables['filesUpdated'], 'True')
       inputs:
         containerRegistry: 'GitHub Packages'
         repository: 'flcdrg/azure-pipelines-container-jobs'
@@ -51,15 +69,12 @@ jobs:
 
     - task: Docker@2
       displayName: 'Docker: push'
+      condition: eq(variables['filesUpdated'], 'True')
       inputs:
         containerRegistry: 'GitHub Packages'
         repository: 'flcdrg/azure-pipelines-container-jobs'
         command: 'push'
         tags: 'latest'
-
-    - script: |
-        docker run --rm ghcr.io/flcdrg/azure-pipelines-container-jobs:latest dotnet --info
-      displayName: Run
 
   - job: use_image
     displayName: Use image
@@ -78,3 +93,4 @@ jobs:
       - script: |
           dotnet --info
           docker info
+        displayName: Info
