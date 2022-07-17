@@ -11,7 +11,7 @@ Builds the image that is used by the second job.
 Features the following performance optimisations:
 
 - The `docker build` step makes use of the `--cache-from` argument.
-- A PowerShell script (based on [https://gist.github.com/Myrddraal/f5a84cf3242e3b3804fa727005ed2786](https://gist.github.com/Myrddraal/f5a84cf3242e3b3804fa727005ed2786)) to skip subsequent steps if there are no changes since the last build.
+- A PowerShell script (based on [this Stack Overflow answer](https://stackoverflow.com/a/69518541/25702)) to skip subsequent steps if there are no changes since the last build.
 
 ## 'Use Image' job
 
