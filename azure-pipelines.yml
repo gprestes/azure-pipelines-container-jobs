@@ -25,7 +25,8 @@ jobs:
   - job: build_image
     displayName: Build Docker image
 
-    container: mcr.microsoft.com/dotnet/sdk:6.0-focal # This has PowerShell
+    # This job could run in a container too, but not absolutely necessary
+    # container: mcr.microsoft.com/dotnet/sdk:6.0-focal # This has PowerShell
 
     variables:
       DOCKER_BUILDKIT: 1

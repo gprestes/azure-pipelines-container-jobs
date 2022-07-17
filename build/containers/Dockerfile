@@ -1,6 +1,7 @@
-# Node 16, .NET 6 and PowerShell 7
+# Node, .NET and PowerShell
+ARG NODE_VERSION=16
 ARG ALPINE_VERSION=3.16
-FROM node:16-alpine${ALPINE_VERSION}
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
 
 ARG DOTNET_SDK_VERSION=6.0.302
 # From https://github.com/dotnet/dotnet-docker/blob/7d0baecabac1f42b65e12a3bdaa0aa291a406d50/src/sdk/6.0/alpine3.16/amd64/Dockerfile#L4
