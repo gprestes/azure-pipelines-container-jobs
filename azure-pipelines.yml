@@ -62,15 +62,15 @@ jobs:
         command: login
         containerRegistry: 'GitHub Packages'
 
-    - script: |
-        docker pull ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
-      displayName: 'Docker: pull'
-      condition: eq(variables['filesUpdated'], 'True')
+    # - script: |
+    #     docker pull ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
+    #   displayName: 'Docker: pull'
+    #   condition: eq(variables['filesUpdated'], 'True')
 
-    - script: |
-        docker inspect ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
-      displayName: 'Docker: inspect'
-      condition: eq(variables['filesUpdated'], 'True')
+    # - script: |
+    #     docker inspect ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
+    #   displayName: 'Docker: inspect'
+    #   condition: eq(variables['filesUpdated'], 'True')
 
     - task: Docker@2
       displayName: 'Docker: build'
