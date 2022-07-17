@@ -1,7 +1,8 @@
 # Node 16, .NET 6 and PowerShell 7
+ARG ALPINE_VERSION=3.16
+FROM node:16-alpine${ALPINE_VERSION}
 
-FROM node:16-alpine3.16
-
+ARG DOTNET_SDK_VERSION=6.0.302
 # From https://github.com/dotnet/dotnet-docker/blob/7d0baecabac1f42b65e12a3bdaa0aa291a406d50/src/sdk/6.0/alpine3.16/amd64/Dockerfile#L4
 ENV \
     DOTNET_CLI_TELEMETRY_OPTOUT=1 \
@@ -12,7 +13,7 @@ ENV \
     # Do not show first run text
     DOTNET_NOLOGO=true \
     # SDK version
-    DOTNET_SDK_VERSION=6.0.302 \
+    DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION} \
     # Disable the invariant mode (set in base image)
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     # Enable correct mode for dotnet watch (only mode supported in a container)
@@ -20,10 +21,10 @@ ENV \
     # Skip extraction of XML docs - generally not useful within an image/container - helps performance
     NUGET_XMLDOC_MODE=skip \
     # PowerShell telemetry for docker image usage
-    POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-DotnetSDK-Alpine-3.16 \
+    POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-DotnetSDK-Alpine-${ALPINE_VERSION} \
     DOTNET_ROOT=/usr/share/dotnet
 
-ARG powershell_version=7.2.5
+ARG POWERSHELL_VERSION=7.2.5
 RUN apk add --no-cache --virtual .pipeline-deps readline linux-pam \
   && apk --no-cache add bash sudo shadow \
   && apk del .pipeline-deps \
@@ -38,12 +39,12 @@ RUN apk add --no-cache --virtual .pipeline-deps readline linux-pam \
     tzdata \
     userspace-rcu \
     curl \
-  && curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin -Channel 6.0 -InstallDir /usr/share/dotnet \
+  && curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin -Channel ${DOTNET_SDK_VERSION} -InstallDir /usr/share/dotnet \
     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet \
   && apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache \
     lttng-ust \
   # Download the powershell '.tar.gz' archive
-  && curl -L https://github.com/PowerShell/PowerShell/releases/download/v${powershell_version}/powershell-${powershell_version}-linux-alpine-x64.tar.gz -o /tmp/powershell.tar.gz \
+  && curl -L https://github.com/PowerShell/PowerShell/releases/download/v${POWERSHELL_VERSION}/powershell-${POWERSHELL_VERSION}-linux-alpine-x64.tar.gz -o /tmp/powershell.tar.gz \
   # Create the target folder where powershell will be placed
   && mkdir -p /opt/microsoft/powershell/7 \
   # Expand powershell to the target folder
@@ -56,7 +57,7 @@ RUN apk add --no-cache --virtual .pipeline-deps readline linux-pam \
 
 LABEL "com.azure.dev.pipelines.agent.handler.node.path"="/usr/local/bin/node"
 
-# This label allows the image to be linked back to the repository
+# This label allows the image to be linked back to the GitHub repository
 LABEL org.opencontainers.image.source https://github.com/flcdrg/azure-pipelines-container-jobs
 
 CMD [ "node" ]
