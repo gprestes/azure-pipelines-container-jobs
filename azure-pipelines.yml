@@ -9,7 +9,7 @@ jobs:
   - job: build_image
     displayName: Build Docker image
 
-    container: ubuntu:22.04
+    container: mcr.microsoft.com/dotnet/sdk:6.0-jammy # This has PowerShell
 
     variables:
       DOCKER_BUILDKIT: 1
