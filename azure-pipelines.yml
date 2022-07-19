@@ -63,14 +63,11 @@ jobs:
         command: login
         containerRegistry: 'GitHub Packages'
 
+    # If you're using a private Docker registry, docker build (with BuildKit) may have trouble
+    # downloading via the --cache-from argument.
     # - script: |
     #     docker pull ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
     #   displayName: 'Docker: pull'
-    #   condition: eq(variables['filesUpdated'], 'True')
-
-    # - script: |
-    #     docker inspect ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
-    #   displayName: 'Docker: inspect'
     #   condition: eq(variables['filesUpdated'], 'True')
 
     - task: Docker@2
