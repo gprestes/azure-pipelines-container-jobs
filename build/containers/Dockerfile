@@ -59,6 +59,8 @@ RUN apk add --no-cache --virtual .pipeline-deps readline linux-pam \
 
 RUN apk add gnupg
 
+# https://learn.microsoft.com/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver15&WT.mc_id=DOP-MVP-5001655
+
 #Download the desired package(s)
 RUN curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.apk \
 	&& curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/mssql-tools18_18.0.1.1-1_amd64.apk
@@ -74,9 +76,12 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc  | gpg --import - \
 
 
 #Install the package(s)
-RUN apk add --allow-untrusted msodbcsql18_18.0.1.1-1_amd64.apk \
-	&& apk add --allow-untrusted mssql-tools18_18.0.1.1-1_amd64.apk \
+RUN apk add --allow-untrusted --no-cache msodbcsql18_18.0.1.1-1_amd64.apk \
+	&& apk add --allow-untrusted --no-cache mssql-tools18_18.0.1.1-1_amd64.apk \
 	&& rm -f msodbcsql18_18.0.1.1-1_amd64.apk mssql-tools18_18.0.1.1-1_amd64.apk
+
+RUN apk add --no-cache netcat-openbsd
+
 LABEL "com.azure.dev.pipelines.agent.handler.node.path"="/usr/local/bin/node"
 
 # This label allows the image to be linked back to the GitHub repository
