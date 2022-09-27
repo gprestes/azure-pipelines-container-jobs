@@ -117,7 +117,7 @@ jobs:
           mkdir $(Agent.TempDirectory)/stuff
           # Ensure full access
           chmod 777 $(Agent.TempDirectory)/stuff
-        displayName: Info for host
+        displayName: Info (host)
         target: host
 
       - script: |
@@ -126,6 +126,11 @@ jobs:
           # /var/lib/mysql is mapped to $(Agent.TempDirectory) in the container config above
           touch /var/lib/mysql/stuff/thing
         displayName: Info
+
+      - script: |
+          ls -al $(Agent.TempDirectory)/stuff
+        displayName: List directory (host)
+        target: host
 
       - task: DotNetCoreCLI@2
         displayName: '.NET: build'
