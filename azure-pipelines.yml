@@ -97,8 +97,8 @@ jobs:
     container:
       image: ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
       endpoint: 'GitHub Packages'
-      volumes:
-        - $(Agent.TempDirectory):/var/lib/mysql
+      # volumes:
+      #   - $(Agent.TempDirectory):/var/lib/mysql
 
     variables:
       Configuration: Release
@@ -118,6 +118,7 @@ jobs:
           # Ensure full access
           chmod 777 $(Agent.TempDirectory)/stuff
           ls -al $(Agent.TempDirectory)
+          touch $(Agent.TempDirectory)/stuff/host
         displayName: Info (host)
         target: host
 
@@ -127,9 +128,10 @@ jobs:
           docker info
 
           ls -al $(Agent.TempDirectory)
-          # /var/lib/mysql is mapped to $(Agent.TempDirectory) in the container config above
-          ls -al /var/lib/mysql
-          touch /var/lib/mysql/stuff/thing
+          touch $(Agent.TempDirectory)/container
+          touch $(Agent.TempDirectory)/stuff/container
+          ls -al $(Agent.TempDirectory)/stuff
+
         displayName: Info
 
       - script: |
