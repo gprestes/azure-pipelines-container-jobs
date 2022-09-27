@@ -97,6 +97,8 @@ jobs:
     container:
       image: ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
       endpoint: 'GitHub Packages'
+      volumes:
+        - $(Agent.TempDirectory):/var/lib/mysql
 
     variables:
       Configuration: Release
@@ -111,12 +113,14 @@ jobs:
       - script: |
           dotnet --info
           docker info
+          touch /var/lib/mysql/thing
         displayName: Info
 
       - script: |
           printenv
           dotnet --info
           docker info
+          ls -al $(Agent.TempDirectory)
         displayName: Info for host
         target: host
 
