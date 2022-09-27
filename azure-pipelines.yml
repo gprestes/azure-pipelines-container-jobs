@@ -113,6 +113,13 @@ jobs:
           docker info
         displayName: Info
 
+      - script: |
+          printenv
+          dotnet --info
+          docker info
+        displayName: Info for host
+        target: host
+
       - task: DotNetCoreCLI@2
         displayName: '.NET: build'
         inputs:
