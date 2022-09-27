@@ -122,6 +122,7 @@ jobs:
         target: host
 
       - script: |
+          printenv
           dotnet --info
           docker info
 
