@@ -117,13 +117,17 @@ jobs:
           mkdir $(Agent.TempDirectory)/stuff
           # Ensure full access
           chmod 777 $(Agent.TempDirectory)/stuff
+          ls -al $(Agent.TempDirectory)
         displayName: Info (host)
         target: host
 
       - script: |
           dotnet --info
           docker info
+
+          ls -al $(Agent.TempDirectory)
           # /var/lib/mysql is mapped to $(Agent.TempDirectory) in the container config above
+          ls -al /var/lib/mysql
           touch /var/lib/mysql/stuff/thing
         displayName: Info
 
