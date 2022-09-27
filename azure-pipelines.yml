@@ -129,6 +129,7 @@ jobs:
           ENCODED_TEMP=$(echo -n "$(Agent.TempDirectory)" | base64)
           echo "##vso[task.setvariable variable=EncodedTemp;isreadonly=true]$ENCODED_TEMP"
         displayName: Info (host)
+        failOnStderr: true
         target: host
 
       - script: |
@@ -139,7 +140,7 @@ jobs:
           echo "myVar: $(myVar)"
           echo "Agent.TempDirectory: $(Agent.TempDirectory)"
 
-          DECODED_TEMP=$(echo '$(EncodedTemp)' | base64 --decode)
+          DECODED_TEMP=$(echo '$(EncodedTemp)' | base64 -d)
 
           echo "DECODED_TEMP: $DECODED_TEMP"
 
@@ -148,6 +149,7 @@ jobs:
           touch $(Agent.TempDirectory)/stuff/container
           ls -al $(Agent.TempDirectory)/stuff
         displayName: Info
+        failOnStderr: true
 
       - script: |
           ls -al $(Agent.TempDirectory)/stuff
