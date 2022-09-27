@@ -111,18 +111,21 @@ jobs:
           releaseType: stable
 
       - script: |
-          dotnet --info
-          docker info
-          touch /var/lib/mysql/thing
-        displayName: Info
-
-      - script: |
           printenv
           dotnet --info
           docker info
-          ls -al $(Agent.TempDirectory)
+          mkdir $(Agent.TempDirectory)/stuff
+          # Ensure full access
+          chmod 777 $(Agent.TempDirectory)/stuff
         displayName: Info for host
         target: host
+
+      - script: |
+          dotnet --info
+          docker info
+          # /var/lib/mysql is mapped to $(Agent.TempDirectory) in the container config above
+          touch /var/lib/mysql/stuff/thing
+        displayName: Info
 
       - task: DotNetCoreCLI@2
         displayName: '.NET: build'
