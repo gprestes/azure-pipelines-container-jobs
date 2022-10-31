@@ -95,11 +95,12 @@ jobs:
     displayName: Use image
     dependsOn: build_image
     container:
-      image: ghcr.io/flcdrg/azure-pipelines-container-jobs:latest
+      image: $(ContainerName)
       endpoint: 'GitHub Packages'
 
     variables:
       Configuration: Release
+      ContainerName: 'ghcr.io/flcdrg/azure-pipelines-container-jobs:latest'
 
     steps:
       - task: DockerInstaller@0
