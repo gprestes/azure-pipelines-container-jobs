@@ -38,7 +38,7 @@ jobs:
       inputs:
         filePath: "scripts/Test-ChangesMadeInPath.ps1"
         arguments: >-
-          -authorisation "Bearer $(system.accesstoken)" 
+          -authorisation "Bearer $($env:SYSTEM_ACCESSTOKEN)" 
           -pathFilter "build/containers" 
           -buildId $(Build.BuildId)
           -collectionUri "$(System.CollectionUri)"
@@ -63,7 +63,7 @@ jobs:
       condition: eq(variables['filesUpdated'], 'True')
       inputs:
         command: login
-        containerRegistry: 'GitHub Packages'
+        containerRegistry: 'GitHub Packages' # This is the name of the service connection to GitHub
 
     # If you're using a private Docker registry, docker build (with BuildKit) may have trouble
     # downloading via the --cache-from argument.
